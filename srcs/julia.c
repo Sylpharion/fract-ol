@@ -12,81 +12,57 @@
 
 #include "../includes/fractol.h"
 
-void		julia(void *mlx, void *win)
+void		julia(t_draw *draw)
 {
-	double x1;
-	double x2;
-	double y1;
-	double y2;
-	double image_x;
-	double image_y;
-	double iteration_max;
-	double zoom;
-	double zoom_x;
-	double zoom_y;
-	double x;
-	double y;
-	double c_r;
-    double c_i;
-    double z_r;
-    double z_i;
-    double i;
-    double tmp;
-
 /*
-** définit la zone que dessiné
+** définit la zone dessiné
 */
-
-	x1 = -1; /* gauche */
-	x2 = 1;  /* droite */
-	y1 = -1.0; /*  haut  */
-	y2 = 1.0;  /*  bas   */
-	zoom = 600;
-	image_x = (x2 - x1) * zoom;
-	image_y = (y2 - y1) * zoom;
-	iteration_max = 150;
-	
-
+	draw->x1 = -1;   /* gauche */
+	draw->x2 = 1;    /* droite */
+	draw->y1 = -1.2; /*  haut  */
+	draw->y2 = 1.2;  /*  bas   */
+	draw->image_x = 1200;
+	draw->image_y = 1200;
+	draw->iteration_max = 150 * draw->z;
 /*
 ** calcule de la taille de l'image
 */
-	
-	zoom_x = image_x/(x2 - x1);
-	zoom_y = image_y/(y2 - y1);
-	x = 0;
-	y = 0;
-
+	draw->zoom_x = draw->image_x/(draw->x2 - draw->x1) * draw->z;
+	draw->zoom_y = draw->image_y/(draw->y2 - draw->y1) * draw->z;
+	draw->x = 0;
 /*
 ** ta gueule c'est magique..
 */
-
-	while (x < image_x)
+	while (draw->x < draw->image_x)
 	{
-		y = 0;
-		while (y < image_y)
+		draw->y = 0;
+		while (draw->y < draw->image_y)
 		{
-			c_r = 0.285;
-		    c_i = 0.01;
-		    z_r = x / zoom + x1;
-		    z_i = y / zoom + y1;
-			i = 0;
-			while (z_r * z_r + z_i * z_i < 4 && i < iteration_max)
+			draw->c_r = 0.285;
+		    draw->c_i = 0.01;
+		    draw->z_r = draw->x / draw->zoom_x + draw->x1;
+		    draw->z_i = draw->y / draw->zoom_y + draw->y1;
+			draw->i = 0;
+			while (draw->z_r * draw->z_r + draw->z_i * draw->z_i < 4 &&
+					draw->i < draw->iteration_max)
 			{
-				tmp = z_r;
-				z_r = z_r * z_r - z_i * z_i + c_r;
-				z_i = 2 * z_i * tmp + c_i;
-				i++;
+				draw->tmp = draw->z_r;
+				draw->z_r = draw->z_r * draw->z_r - draw->z_i * draw->z_i +
+							draw->c_r;
+				draw->z_i = 2 * draw->z_i * draw->tmp + draw->c_i;
+				draw->i++;
 			}
 			/*
 			** dessine le pixel
 			*/
-			if (i == iteration_max)
-            	mlx_pixel_put(mlx, win, x, y, 0x000000);
-            else
-            	mlx_pixel_put(mlx, win, x, y, (i * 18 * 255 / iteration_max *
-            													0x0000FF));
-			y++;
+            if (draw->i != draw->iteration_max)
+            	mlx_pixel_put(draw->mlx, draw->win, draw->x, draw->y,
+            					((draw->r * 65536) +
+            					 (draw->g * 256) +
+            					  draw->b) * draw->i);
+// swaggy color : (draw->i * 18 * 255 / draw->iteration_max * 0x0000FF)
+			draw->y++;
 		}
-		x++;
+		draw->x++;
 	}
 }
