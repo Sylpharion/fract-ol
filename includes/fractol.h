@@ -21,31 +21,36 @@ typedef	struct 	s_draw
 {
 	void	*mlx;
 	void	*win;
-	double	x1;
-	double	x2;
-	double	y1;
-	double	y2;
-	double	image_x;
-	double	image_y;
-	double	iteration_max;
-	double	zoom_x;
-	double	zoom_y;
-	double	x;
-	double	y;
-	double	c_r;
-	double	c_i;
-	double	z_r;
-	double	z_i;
-	double	i;
-	double	tmp;
-	double	r;
-	double	g;
-	double	b;
-	double	z;
-	double	mouse_x;
-	double	mouse_y;
-	double	zoomove_x;
-	double	zoomove_y;
+	char	**argv_cpy;
+	long double	x1;
+	long double	x2;
+	long double	y1;
+	long double	y2;
+	long double	image_x;
+	long double	image_y;
+	long double	iteration_max;
+	long double	zoom_x;
+	long double	zoom_y;
+	long double	x;
+	long double	y;
+	long double	c_r;
+	long double	c_i;
+	long double	z_r;
+	long double	z_i;
+	long double	i;
+	long double	tmp;
+	long double	r;
+	long double	g;
+	long double	b;
+	long double	z;
+	long double	mouse_x;
+	long double	mouse_y;
+	long double	zoomove_x;
+	long double	zoomove_y;
+	long double iter;
+	long double	stop;
+	long double m_x;
+	long double m_y;
 }				t_draw;
 
 /*
@@ -82,8 +87,7 @@ $ .....: 21
 ) .....: 29
 */
 
-void		fract_menu(t_draw *draw);
-void		fract_init(t_draw *draw);
+void		fract_init(t_draw *draw, char **argv);
 
 int			keyboard_cat(int keycode, t_draw *draw);
 int			mykey_mouse(/*int	keycode, */int x, int y, t_draw *draw);
@@ -91,12 +95,15 @@ int			mouse_chocolat(int keycode, int x, int y, t_draw *draw);
 void		red_move(int keycode, t_draw *draw);
 void		green_move(int keycode, t_draw *draw);
 void		blue_move(int keycode, t_draw *draw);
-int			i_like_to_move_it(int x, int y, t_draw *draw);
-void		zoom(int keycode, t_draw *draw);
+void		iter_move(int keycode, t_draw *draw);
+void		momove(int keycode, t_draw *draw);
+void		ft_draw(t_draw *draw, char *s);
 
 
 int			fract_error(int argc, char **argv, t_draw *draw);
 void		mandelbrot(t_draw *draw);
 void		julia(t_draw *draw);
+void		burning_ship(t_draw *draw);
+void		powerbrot(t_draw *draw);
 
 #endif

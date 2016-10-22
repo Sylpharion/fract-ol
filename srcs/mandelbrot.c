@@ -23,7 +23,7 @@ void		mandelbrot(t_draw *draw)
 	draw->y2 = 1.2;  		/*  bas   */
 	draw->image_x = 1200;
 	draw->image_y = 1200;
-	draw->iteration_max = 50;
+	draw->iteration_max = 50 + draw->iter;
 /*
 ** calcule de la taille de l'image
 */
@@ -38,8 +38,10 @@ void		mandelbrot(t_draw *draw)
 		draw->y = 0;
 		while (draw->y < draw->image_y)
 		{
-			draw->c_r = (draw->zoomove_x + (draw->x - draw->mouse_x) / draw->z) / draw->zoom_x + draw->x1;
-		    draw->c_i = (draw->zoomove_y + (draw->y - draw->mouse_y) / draw->z) / draw->zoom_y + draw->y1;
+			draw->c_r = (draw->zoomove_x + (draw->x - draw->mouse_x) /
+						draw->z) / draw->zoom_x + draw->x1 + draw->m_x;
+		    draw->c_i = (draw->zoomove_y + (draw->y - draw->mouse_y) /
+		    			draw->z) / draw->zoom_y + draw->y1 + draw->m_y;
 		    draw->z_r = 0;
 		    draw->z_i = 0;
 			draw->i = 0;
@@ -47,15 +49,19 @@ void		mandelbrot(t_draw *draw)
 					draw->i < draw->iteration_max)
 			{
 				draw->tmp = draw->z_r;
-				draw->z_r = draw->z_r * draw->z_r - draw->z_i * draw->z_i + draw->c_r;
+				draw->z_r = sinh(draw->z_r) * tanh(draw->z_r) - cosh(draw->z_i * exp(draw->z_i) +
+							draw->c_r);
 				draw->z_i = 2 * draw->z_i * draw->tmp + draw->c_i;
 				draw->i++;
 			}
 			/*
 			** dessine le pixel
 			*/
-            if (draw->i != draw->iteration_max)
-            	mlx_pixel_put(draw->mlx, draw->win, draw->x, draw->y, (draw->i * 18 * 255 / draw->iteration_max * 0x0000FF));
+            if (draw->i < draw->iteration_max)
+            	mlx_pixel_put(draw->mlx, draw->win, draw->x, draw->y,
+    						((draw->r * 65536) +
+    						(draw->g * 256) +
+    						draw->b) * draw->i);
 // swaggy color : (draw->i * 18 * 255 / draw->iteration_max * 0x0000FF)
 			draw->y++;
 		}

@@ -16,10 +16,12 @@ CC =		gcc
 
 EXT =		.c
 
-FLAGS =		-g
-# -fsanitize=address -Wall -Werror -Wextra
+FLAGS =		-g -O2 -O3
+# -fsanitize=address
+# -Wall -Werror -Wextra
 
-FILE =		fractol		mandelbrot		julia
+FILE =		fractol		mandelbrot		julia			burnship		error\
+			color		powerbrot
 
 SOURCE = 	srcs/
 
@@ -65,8 +67,9 @@ clean:
 		@rm -rf $(OBJ)
 		@echo "$(C_B)$(NAME)$(C_R)		All obj are cleaned$(C_W)"
 		@(cd $(LIB_DIR) && $(MAKE) $@)
-		@(cd $(LIB_MLX) && $(MAKE) $@)
 		@echo "$(C_B)$(LIB_DIR)$(C_R)		All obj are cleaned$(C_W)"
+		@(cd $(LIB_MLX) && $(MAKE) $@)
+		@echo "$(C_B)$(LIB_MLX)$(C_R)		All obj are cleaned$(C_W)"
 
 fclean: clean
 		@rm -rf $(NAME)
