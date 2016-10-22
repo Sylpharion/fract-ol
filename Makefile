@@ -21,7 +21,7 @@ FLAGS =		-g -O2 -O3
 # -Wall -Werror -Wextra
 
 FILE =		fractol		mandelbrot		julia			burnship		error\
-			color		powerbrot
+			color		powerbrot		superjulia		hook_move
 
 SOURCE = 	srcs/
 
